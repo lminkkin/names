@@ -14,7 +14,7 @@ export const getAllNames = async (req, res) => {
 export const getName = async (req, res) => {
     const { searchString } = req.params;
     const foundName = await nameModel.find(
-        { name: { $regex: /^searchString*/, $options: "i" } }
+        { name: { $regex: searchString, $options: "i" } }
     );
     if (foundName) {
         res.json(foundName);

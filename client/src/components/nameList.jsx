@@ -8,6 +8,7 @@ import {
     TableContainer,
     TableRow,
     TableSortLabel,
+    TablePagination,
     Paper
 } from "@material-ui/core";
 
@@ -15,6 +16,9 @@ const NameList = ({ names }) => {
 
     const [order, setOrder] = useState();
     const [orderBy, setOrderBy] = useState();
+    const pages = [5, 10, 20];
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(pages[page])
 
     const headCells = [
         {id: "name", label: "First Name"},
@@ -55,15 +59,25 @@ const NameList = ({ names }) => {
         return 0;
     }
 
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage)
+    }
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(parseInt(event.target.value));
+        setPage(0)
+    }
+
     const afterSort = () => {
-        return stableSort(names, getComparator(order, orderBy));
+        return stableSort(names, getComparator(order, orderBy)).slice(page * rowsPerPage, (page+1)*rowsPerPage)
+        
     }
 
     return(
         <div>
-            <Container maxWidth="md">
+            <Container>
                     <TableContainer component={Paper}>
-                        <Table size="small">
+                        <Table>
                             <TableHead>
                                     <TableRow>
                                     {headCells.map((headCell) => (
@@ -80,6 +94,7 @@ const NameList = ({ names }) => {
                                             </TableSortLabel>
                                         </TableCell>
                                     ))}
+                                    <TableCell>Sum: {names.map((item) => item.amount).reduce((curr, acc) => curr + acc, 0)}</TableCell>
                                     </TableRow>
                             </TableHead>
                             <TableBody>
@@ -87,9 +102,22 @@ const NameList = ({ names }) => {
                                 <TableRow key={name._id}>
                                     <TableCell>{name.name}</TableCell>
                                     <TableCell>{name.amount}</TableCell>
+                                    <TableCell></TableCell> 
                                 </TableRow>)}
+                                <TableRow>
+                                
+                                </TableRow>
                             </TableBody>
                         </Table>
+                        <TablePagination
+                            page={page}
+                            rowsPerPageOptions={pages}
+                            rowsPerPage={rowsPerPage}
+                            count={names.length}
+                            onChangePage={handleChangePage}
+                            onChangeRowsPerPage={handleChangeRowsPerPage}
+
+                        />
                     </TableContainer>
          </Container>
         </div>
