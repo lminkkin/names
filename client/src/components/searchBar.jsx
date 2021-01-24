@@ -7,7 +7,7 @@ import Popper from "@material-ui/core/Popper";
 
 const SearchBar = () => {
 
-    const [searched, setSearched] = useState([]);
+    const [searched, setSearched] = useState();
     const [params, setParams] = useState();
     const [anchorEl, setAnchorEl] = useState(null);
 
@@ -37,9 +37,13 @@ const SearchBar = () => {
                 handleClick(event)}}>Search
             </Button>
             <Popper id={id} anchorEl={anchorEl} open={open}>
-                {searched.map((item) => 
-                    <div>The name {item.name} occurs {item.amount} times</div>
-                )}
+                {searched ? 
+                    searched.map((item) => 
+                        <div key={item.name}>The name {item.name} occurs {item.amount} times</div>
+                    )
+                    :
+                    <div>The name was not found</div>
+                }
             </Popper>
 
         </div>

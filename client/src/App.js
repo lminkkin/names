@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { sendRequest } from "./utils.js";
 import NameList from './components/nameList';
 import SearchBar from "./components/searchBar.jsx";
-import Total from "./components/total.jsx";
 
 
 const App = () => {
@@ -22,7 +21,6 @@ const App = () => {
 
   return (
     <div>
-      <Total names={names}/>
       <SearchBar/>
       <NameList names={names} />
     </div>
